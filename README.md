@@ -1,6 +1,6 @@
-# qr_scanner
+# Snap 'n' Score
 
-A new Flutter project.
+
 
 ## Getting Started
 
