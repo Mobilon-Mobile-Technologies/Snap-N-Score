@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:qr_scanner/homePage.dart';
+import 'package:qr_scanner/profile.dart';
+import 'package:qr_scanner/scanner.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -9,19 +12,29 @@ class BottomNavBar extends StatefulWidget {
 }
 
 class _BottomNavBarState extends State<BottomNavBar> {
-   int currentIndex = 0;
+  int index=0;
+  final screens=[
+    const homePage(),
+    const QRViewExample(),
+    const ProfilePage()
+  ];
+   
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-       bottomNavigationBar: NavigationBar(
+      body: screens[index],
+       bottomNavigationBar: NavigationBar( 
+        backgroundColor: Colors.white,
+        animationDuration: Duration(seconds: 3),
           indicatorColor: Colors.teal,
           onDestinationSelected: (int index) {
             setState(() {
-              currentIndex = index;
+              this.index = index;
             });
           },
-          selectedIndex: currentIndex,
+          selectedIndex: index,
           destinations: const [
             NavigationDestination(
               icon: Icon(Icons.home),
@@ -38,6 +51,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
           ],
 
         ),
+        
 
     );
   }
