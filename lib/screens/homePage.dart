@@ -15,17 +15,8 @@ class _homePageState extends State<homePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Ninety Percent Club'),
-        backgroundColor: Colors.teal,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(10),
-          ),
-        ),
       ),
-      body: const  Text(
-        "Home Page",
-        style: TextStyle(fontSize: 25),
-      ),
+
     );
   }
 }

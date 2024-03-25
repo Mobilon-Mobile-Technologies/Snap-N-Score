@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:qr_scanner/homePage.dart';
-import 'package:qr_scanner/profile.dart';
-import 'package:qr_scanner/scanner.dart';
+import 'package:qr_scanner/screens/homePage.dart';
+import 'package:qr_scanner/screens/profile.dart';
+import 'package:qr_scanner/screens/scanner.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -27,7 +27,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       body: screens[index],
        bottomNavigationBar: NavigationBar( 
         backgroundColor: Colors.white,
-        animationDuration: Duration(seconds: 3),
+        animationDuration: const Duration(seconds: 3),
           indicatorColor: Colors.teal,
           onDestinationSelected: (int index) {
             setState(() {
