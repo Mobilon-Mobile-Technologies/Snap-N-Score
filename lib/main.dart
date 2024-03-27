@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qr_scanner/authentication/login.dart';
 import 'package:qr_scanner/bottomNav.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,15 +15,38 @@ void main() async{
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+  final supabase=Supabase.instance.client;
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Widget _currentScreen=LoginPage();
+
+  @override
+  void initState() {
+    super.initState();
+    _redirectUser();
+  }
+
+  void _redirectUser() {
+    final user = supabase.auth.currentSession;
+    if (user != null) {
+      setState(() {
+        _currentScreen=BottomNavBar();
+      });
+    } 
+  }
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true),
-      home: const BottomNavBar()
+      home: _currentScreen
     );
   }
 }
