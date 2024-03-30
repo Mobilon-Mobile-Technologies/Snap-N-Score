@@ -38,6 +38,9 @@ dependencies:
   qr_code_scanner: ^1.0.1
   url_launcher: ^6.2.4
   supabase_flutter: ^2.3.4
+  smooth_page_indicator: ^1.1.0
+  lottie: ^2.7.0
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:
