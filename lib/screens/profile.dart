@@ -12,7 +12,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    final supabase=Supabase.instance.client;
+    final supabase = Supabase.instance.client;
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -26,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: const EdgeInsets.only(top: 30.0),
               child: SizedBox(
                 width: size.width,
-                child:  Column(
+                child: Column(
                   children: [
                     const CircleAvatar(
                       backgroundColor: Colors.transparent,
@@ -35,7 +35,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           'https://static.vecteezy.com/system/resources/previews/014/194/232/original/avatar-icon-human-a-person-s-badge-social-media-profile-symbol-the-symbol-of-a-person-vector.jpg'),
                     ),
                     const SizedBox(height: 10),
-                     Text("${supabase.auth.currentUser?.userMetadata?['name']}",                  
+                    Text(
+                      "${supabase.auth.currentUser?.userMetadata?['name']}",
                       style: const TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -43,7 +44,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     SizedBox(height: 5),
-                    Text("${supabase.auth.currentUser?.email}",)
+                    Text(
+                      "${supabase.auth.currentUser?.email}",
+                    )
                   ],
                 ),
               ),
@@ -53,24 +56,15 @@ class _ProfilePageState extends State<ProfilePage> {
               padding: const EdgeInsets.only(left: 17.0),
               child: Container(
                 alignment: Alignment.centerLeft,
-                child: const Text(
-                  "Share Precise Location",
-                  style: TextStyle(
-                    fontSize: 20.5,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
               ),
             ),
-
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             Align(
               heightFactor: 3.5,
               alignment: Alignment.bottomCenter,
               child: Container(
                 width: 155,
-                child: ElevatedButton(
+                child: FilledButton.tonal(
                   onPressed: () async {
                     await supabase.auth.signOut().then((value) {
                       Navigator.pushReplacement(
@@ -80,13 +74,12 @@ class _ProfilePageState extends State<ProfilePage> {
                           ));
                     });
                   },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStatePropertyAll(Colors.red[900]),
+                  ),
                   child: const Text(
                     'Log out',
                     style: TextStyle(color: Colors.white),
-                  ),
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        Color.fromARGB(255, 255, 91, 91)),
                   ),
                 ),
               ),

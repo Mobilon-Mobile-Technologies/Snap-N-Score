@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -35,11 +36,8 @@ class _QRViewExampleState extends State<QRViewExample> {
       int code = result!.code != null ? int.parse(result!.code!) : 0;
 
       if (await keyChecker(code)) {
-
         if (mounted) {
-
           if (result != null && !showBottomSheet) {
-
             showBottomSheet = true;
             // Show bottom sheet
 
@@ -126,20 +124,33 @@ class _QRViewExampleState extends State<QRViewExample> {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 400 ||
             MediaQuery.of(context).size.height < 400)
-        ? 150.0
+        ? 200.0
         : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-          borderColor: Colors.white,
-          borderRadius: 10,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: scanArea),
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    return Stack(
+      children: [
+        QRView(
+          key: qrKey,
+          onQRViewCreated: _onQRViewCreated,
+          overlay: QrScannerOverlayShape(
+              borderColor: Colors.white,
+              borderRadius: 10,
+              borderLength: 30,
+              borderWidth: 10,
+              cutOutSize: scanArea),
+          onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+        ),
+        Center(
+          child: Positioned(
+            child: LottieBuilder.network(
+              "https://lottie.host/ba4ec548-12cd-4d8c-a3c0-39d6f72b0b27/a9zrVvr615.json",
+              width: 200,
+              height: 200,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
