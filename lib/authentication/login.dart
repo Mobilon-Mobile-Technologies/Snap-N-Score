@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qr_scanner/authentication/signup.dart';
+import 'package:qr_scanner/authentication/signup_1.dart';
 import 'package:qr_scanner/bottomNav.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
           TextButton(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignupPage()));
+                    MaterialPageRoute(builder: (context) => SignupPage1()));
               },
               child: Text("Sign Up"))
         ],

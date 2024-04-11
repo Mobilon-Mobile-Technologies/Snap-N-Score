@@ -1,34 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:qr_scanner/authentication/signup_2.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+class SignupPage1 extends StatefulWidget {
+  const SignupPage1({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<SignupPage1> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends State<SignupPage1> {
   final supabase = Supabase.instance.client;
   final _formkey = GlobalKey<FormState>();
   final _firstname = TextEditingController();
   final _lastname = TextEditingController();
+  final _enrollno=TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   int _selectedYear = 1;
+
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
         title: const Text("Signup Page"),
+        bottom: const PreferredSize(
+          preferredSize: Size.fromHeight(1.0),
+          child: LinearProgressIndicator(
+            value: 0.5,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(
-              top: height * 0.10, left: height * 0.02, right: height * 0.02),
+              top: height * 0.05, left: height * 0.02, right: height * 0.02),
           child: Column(
             children: [
               Form(
@@ -79,17 +87,46 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(
                       height: 20,
                     ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: TextFormField(
+                            controller: _enrollno,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              hintText: "Enrollment Number",
+                              helperText: "Eg:E30CSEU1269",
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "Enter Email";
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     TextFormField(
                       controller: _emailController,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: "Enter Email",
-                          helperText: "ABC@gmail.com"),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        hintText: "University Email",
+                        helperText: "ABC@bennett.edu.in",
+                      ),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Enter Email";
+                        } else if (!value.contains("bennett.edu.in")) {
+                          return "Enter a valid University Email";
                         }
                         return null;
                       },
@@ -100,11 +137,11 @@ class _SignupPageState extends State<SignupPage> {
                     TextFormField(
                       controller: _passwordController,
                       decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: "Enter Password",
-                          helperText: "ABC@gmail.com",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        hintText: "Enter Password",
+                        helperText: "ABC@gmail.com",
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -117,7 +154,7 @@ class _SignupPageState extends State<SignupPage> {
                 ),
               ),
               const SizedBox(
-                height: 20,
+                height: 16,
               ),
               const Text(
                 "Select your current year",
@@ -144,30 +181,26 @@ class _SignupPageState extends State<SignupPage> {
                 },
               ),
               SizedBox(
-                height: height * 0.1,
+                height: height * 0.05,
               ),
               OutlinedButton.icon(
                 icon: const Icon(Icons.navigate_next_rounded),
-                label: const Text("Sign Up"),
-
-                onPressed: () async {
-
-                  if(_formkey.currentState!.validate()){
-
-                    final sm = ScaffoldMessenger.of(context);
-                    await supabase.auth.signUp(
-                        password: _passwordController.text,
-                        email: _emailController.text,
-                        data: {
-                          'name': "${_firstname.text} ${_lastname.text}",
-                          "year": _selectedYear
-                        }).then((value) {
-                      sm.showSnackBar(SnackBar(
-                          content: Text("Signed up ${value.user!.email!}")));
-                    });
+                label: const Text("next"),
+                onPressed: () {
+                  if (_formkey.currentState!.validate()) {
+                    final name = "${_firstname.text}${_lastname.text}";
+                    final enrollno=_enrollno.text;
+                    final email = _emailController.text;
+                    final password = _passwordController.text;
+                    final year = _selectedYear.toString();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SignupPage2(name, enrollno, email, password, year),
+                        ));
                   }
                 },
-
                 style: ButtonStyle(
                     fixedSize: MaterialStatePropertyAll<Size>(
                         Size(height * 0.5, height * 0.068)),
@@ -175,7 +208,6 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ],
           ),
-          
         ),
       ),
     );
