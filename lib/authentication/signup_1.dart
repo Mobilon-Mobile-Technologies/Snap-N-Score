@@ -193,7 +193,7 @@ class _SignupPageState extends State<SignupPage1> {
                     final email = _emailController.text;
                     final password = _passwordController.text;
                     final year = _selectedYear.toString();
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>

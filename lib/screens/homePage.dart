@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class homePage extends StatefulWidget {
-  const homePage({super.key});
+  const homePage({super.key, this.mybool});
+  final mybool;
 
   @override
   State<homePage> createState() => _homePageState();
@@ -17,6 +17,17 @@ class _homePageState extends State<homePage> {
   final random = Random();
   final supabase = Supabase.instance.client;
   int currentIndex = 0;
+  List courses = [];
+  List attendance = ["0", "0", "0", "0", "0", "0"];
+
+  @override
+  void initState() {
+    super.initState();
+    getdata().then((_) async {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     List<List<Color>> gradients = [
@@ -89,9 +100,34 @@ class _homePageState extends State<homePage> {
                     List<Color> gradientvar = gradients[gradindex];
                     gradients.removeAt(gradindex);
                     return Container(
+                      padding: EdgeInsets.all(height * 0.02),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(17),
                         gradient: LinearGradient(colors: gradientvar),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              CircleAvatar(
+                                child: Text(attendance[index] + "%"),
+                                radius: height * 0.03,
+                                backgroundColor: gradientvar[0],
+                              )
+                            ],
+                          ),
+                          Text(
+                            courses[index],
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          )
+                        ],
                       ),
                     );
                   }
@@ -102,5 +138,17 @@ class _homePageState extends State<homePage> {
         ),
       ),
     );
+  }
+
+  Future getdata() async {
+    final data = await supabase.from('courses').select().eq("semester", "1");
+
+    for (Map<String, dynamic> map in data) {
+      map.forEach((key, value) {
+        if (key != "semester") {
+          courses.add(value);
+        }
+      });
+    }
   }
 }
