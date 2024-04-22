@@ -3,7 +3,8 @@ import 'package:qr_scanner/authentication/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignupPage2 extends StatefulWidget {
-  const SignupPage2(this.name,this.enrollno, this.email, this.password, this.year,
+  const SignupPage2(
+      this.name, this.enrollno, this.email, this.password, this.year,
       {super.key});
 
   final String name, enrollno, email, password, year;
@@ -14,14 +15,20 @@ class SignupPage2 extends StatefulWidget {
 
 class _SignupPage2State extends State<SignupPage2> {
   final Set<String> _checkedCourses = <String>{};
+  final Set<int> _MappedCoursesId = <int>{};
   final supabase = Supabase.instance.client;
   List courses = [];
+  int? _selectedSemester;
 
   @override
   void initState() {
     super.initState();
-    getdata().then((_) {
-      setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showSemesterDialog().then((_) {
+        getdata().then((_) {
+          setState(() {});
+        });
+      });
     });
   }
 
@@ -84,25 +91,63 @@ class _SignupPage2State extends State<SignupPage2> {
                     ],
                   ),
                 ),
-                OutlinedButton.icon(
-                  icon: const Icon(Icons.navigate_next_rounded),
-                  label: const Text("next"),
+                OutlinedButton(
+                  child: const Text("Signup"),
                   onPressed: () async {
                     final sm = ScaffoldMessenger.of(context);
+                    // adding user details to the users table
+                    await supabase.from('users').insert({
+                      'username': widget.name,
+                      'enrollment_id': widget.enrollno
+                    });
+
+                    // Get the user ID for course enrollment (after user creation)
+                    final userResponse = await supabase
+                        .from('users')
+                        .select('user_id')
+                        .eq('enrollment_id', widget.enrollno);
+                    final userId = userResponse[0]['user_id'];
+                    print(userId);
+
+                    // Get the course ID for course enrollment (after user creation)
+                    for (String cName in _checkedCourses) {
+                      print("Course name: $cName");
+                      final course2 = await supabase
+                          .from('courses2')
+                          .select('course_id')
+                          .eq('course_name',cName);
+                          final courseId=course2[0]['course_id'];
+                          _MappedCoursesId.add(courseId);
+
+                    }
+                    print("Mapped coursesId: $_MappedCoursesId");
+                    
+
+                    for (int course in _MappedCoursesId) {
+                      await supabase
+                          .from('user_courses')
+                          .insert({'user_id': userId, 'course_id': course});
+                    }
+
                     await supabase.auth.signUp(
                         password: widget.password,
                         email: widget.email,
                         data: {
                           'name': widget.name,
-                          'enroll_no':widget.enrollno,
-                          "year": widget.year
+                          'enroll_no': widget.enrollno,
+                          "year": widget.year,
+                          "user_id": userId
                         }).then((value) {
                       sm.showSnackBar(SnackBar(
                           content: Text("Signed up ${value.user!.email!}")));
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginPage(),
+                          ));
                     }).onError((error, stackTrace) {
-                       sm.showSnackBar(SnackBar(
-                          content: Text("Signed up ${error}")));
+                      sm.showSnackBar(
+                          SnackBar(content: Text("Signed up ${error}")));
                     });
                   },
                   style: ButtonStyle(
@@ -123,12 +168,54 @@ class _SignupPage2State extends State<SignupPage2> {
     );
   }
 
+  Future<void> _showSemesterDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return StatefulBuilder(builder: (BuildContext context, setState) {
+          return AlertDialog(
+            title: const Text('Enter Semester'),
+            content: DropdownButton<int>(
+              hint: Text("Select a semester"),
+              items: List<int>.generate(2, (i) => i + 1).map((int value) {
+                return DropdownMenuItem<int>(
+                  value: value,
+                  child: Text(value.toString()),
+                );
+              }).toList(),
+              onChanged: (int? newValue) {
+                setState(() {
+                  _selectedSemester = newValue;
+                });
+              },
+              value: _selectedSemester,
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        });
+      },
+    );
+  }
+
   Future getdata() async {
-    final data = await supabase.from('courses').select().eq("semester", "1");
+    final data = await supabase
+        .from('courses')
+        .select()
+        .eq('year', widget.year)
+        .eq('semester', _selectedSemester.toString());
 
     for (Map<String, dynamic> map in data) {
       map.forEach((key, value) {
-        if (key != "semester") {
+        print(key);
+        if (key != "semester" && key != "year" && value != null) {
           courses.add(value);
         }
       });

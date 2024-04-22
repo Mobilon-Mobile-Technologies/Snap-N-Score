@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_scanner/main.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class QRViewExample extends StatefulWidget {
@@ -15,16 +16,19 @@ class QRViewExample extends StatefulWidget {
 }
 
 class _QRViewExampleState extends State<QRViewExample> {
+  bool actionTaken=false;
   bool showBottomSheet = false;
   bool? _checkboxValue = false;
   Barcode? result;
   QRViewController? controller;
+  int lastScanned=0;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   //rk
   String? url;
 
   void _onQRViewCreated(QRViewController controller) {
+    final studentid = supabase.auth.currentUser?.userMetadata?['user_id'];
     setState(() {
       this.controller = controller;
     });
@@ -34,6 +38,7 @@ class _QRViewExampleState extends State<QRViewExample> {
       });
 
       int code = result!.code != null ? int.parse(result!.code!) : 0;
+      
 
       if (await keyChecker(code)) {
         if (mounted) {
@@ -76,9 +81,23 @@ class _QRViewExampleState extends State<QRViewExample> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 FilledButton.tonal(
-                                  onPressed: () {
+                                  onPressed: () async {
                                     showBottomSheet = false;
                                     Navigator.pop(context);
+                                    if (_checkboxValue == true) {
+                                      // getting keyId with the hep of key value
+                                      final keyId = await supabase
+                                          .from('keys_table')
+                                          .select('key_id')
+                                          .eq('key_value', code);
+                                      print("KeyId: $keyId");
+                                      await supabase
+                                          .from('attendance_student')
+                                          .insert({
+                                        'student_id': studentid,
+                                        'key_id': keyId[0]['key_id']
+                                      });
+                                    }
                                   },
                                   child: const Text("Submit"),
                                 ),
@@ -93,6 +112,15 @@ class _QRViewExampleState extends State<QRViewExample> {
               },
             );
           }
+        }
+      }
+      else{
+        if(actionTaken==false){
+          final sm=ScaffoldMessenger.of(context);
+          sm.showSnackBar(SnackBar(content: Text("Invalid Qr"),backgroundColor: Colors.redAccent[100],));
+          setState(() {
+            actionTaken=true;
+          });
         }
       }
     });
@@ -171,14 +199,14 @@ class _QRViewExampleState extends State<QRViewExample> {
 }
 
 Future<bool> keyChecker(int code) async {
-  final result = await Supabase.instance.client.from('notes').select('key');
+  final result =
+      await Supabase.instance.client.from('keys_table').
+      select('active').eq('key_value', code);
+  print("code: $code");
   print("result: $result");
 
-  for (var row in result) {
-    if (row['key'] == code) {
-      print("Key found");
-      return true;
-    }
+  if (result[0]['active'] == 1) {
+    return true;
   }
   return false;
 }
