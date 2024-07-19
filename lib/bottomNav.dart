@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_scanner/screens/homePage.dart';
 import 'package:qr_scanner/screens/profile.dart';
-import 'package:qr_scanner/screens/scanner.dart';
+import 'package:qr_scanner/screens/scanner_new.dart';
 
 
 class BottomNavBar extends StatefulWidget {
@@ -15,7 +15,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int index=0;
   final screens=[
     const homePage(),
-    const QRViewExample(),
+     QrScanner(),
     const ProfilePage()
   ];
    

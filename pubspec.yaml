@@ -41,6 +41,8 @@ dependencies:
   smooth_page_indicator: ^1.1.0
   lottie: ^2.7.0
   shared_preferences: ^2.2.2
+  ai_barcode_scanner: ^5.1.1+2
+  timer_count_down: ^2.2.2
 
 dev_dependencies:
   flutter_test:

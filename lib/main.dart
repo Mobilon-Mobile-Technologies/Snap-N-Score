@@ -5,7 +5,7 @@ import 'package:qr_scanner/onboarding.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
+final theme=ThemeData(brightness: Brightness.light,colorSchemeSeed: Colors.teal.shade100);
 void main() async{
     WidgetsFlutterBinding.ensureInitialized();
 
@@ -54,8 +54,9 @@ class _MyAppState extends State<MyApp> {
     
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
+      theme: theme,
       home: widget.onboarding? _currentScreen : const OnBoarding()
     );
   }
+
 }

@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -68,7 +67,7 @@ class _homePageState extends State<homePage> {
                       topRight: Radius.circular(20),
                       bottomRight: Radius.circular(20),
                     ),
-                    color: Colors.pink[50],
+                    color: Theme.of(context).secondaryHeaderColor
                   ),
                   child: Center(
                     child: Text(
@@ -116,11 +115,11 @@ class _homePageState extends State<homePage> {
                                           !showAttendanceDetails),
                                   child: showAttendanceDetails
                                       ? Container(
-                                          height: height * 0.06,
-                                          width: height * 0.06,
+                                          height: height * 0.07,
+                                          width: height * 0.07,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                                  BorderRadius.circular(20),
+                                                  BorderRadius.circular(25),
                                               color: gradients[index][0]),
                                           child: ((Attended_classes[index] /Total_Classes[index]).isNaN)
                                               ? Center(
@@ -188,7 +187,7 @@ class _homePageState extends State<homePage> {
         .eq('user_id', supabase.auth.currentUser?.userMetadata?['user_id']);
     print("Courses: $getcourses");
 
-    if (getcourses != null && getcourses.isNotEmpty) {
+    if (getcourses.isNotEmpty) {
       for (var course in getcourses) {
         courses.add(course['courses2']['course_name']);
       }
@@ -197,7 +196,7 @@ class _homePageState extends State<homePage> {
 
   Future getAttendancedetails() async {
     final studentId =
-        supabase.auth.currentSession?.user?.userMetadata?['user_id'];
+        supabase.auth.currentSession?.user.userMetadata?['user_id'];
     // basic visualisation of attendance
     for (int i = 0; i < courses.length; i++) {
       int num = random.nextInt(100);
