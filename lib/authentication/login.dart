@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:qr_scanner/authentication/signup_1.dart';
 import 'package:qr_scanner/bottomNav.dart';
@@ -20,14 +22,14 @@ class _LoginPageState extends State<LoginPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: const Text("Login"),
         actions: [
           TextButton(
               onPressed: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => SignupPage1()));
+                    MaterialPageRoute(builder: (context) => const SignupPage1()));
               },
-              child: Text("Sign Up"))
+              child: const Text("Sign Up"))
         ],
       ),
       body: Padding(
@@ -84,17 +86,17 @@ class _LoginPageState extends State<LoginPage> {
                           email: _EmailController.text)
                       .then((value) {
                     Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: ((context) => BottomNavBar())));
+                        MaterialPageRoute(builder: ((context) => const BottomNavBar())));
                   }).onError((error, stackTrace) {
                     sm.showSnackBar(SnackBar(content: Text("$error")));
                   });
                 }
               },
-              child: Text("login"),
               style: ButtonStyle(
                   fixedSize: MaterialStatePropertyAll<Size>(
                       Size(height * 0.5, height * 0.068)),
-                  overlayColor: MaterialStatePropertyAll(Colors.greenAccent)),
+                  overlayColor: const MaterialStatePropertyAll(Colors.greenAccent)),
+              child: const Text("login"),
             ),
           ],
         ),

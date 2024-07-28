@@ -1,14 +1,13 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, file_names, camel_case_types, non_constant_identifier_names
 
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key, this.mybool});
-  final mybool;
+  final bool? mybool;
 
   @override
   State<homePage> createState() => _homePageState();
@@ -185,7 +184,7 @@ class _homePageState extends State<homePage> {
         .from('user_courses')
         .select('*, courses2!inner(*)')
         .eq('user_id', supabase.auth.currentUser?.userMetadata?['user_id']);
-    print("Courses: $getcourses");
+    debugPrint("Courses: $getcourses");
 
     if (getcourses.isNotEmpty) {
       for (var course in getcourses) {
@@ -203,7 +202,7 @@ class _homePageState extends State<homePage> {
       attendance.add(num);
     }
 
-    print(courses[0]);
+    debugPrint(courses[0]);
     //finding course id from courses2 table
 
     for (String name in courses) {
@@ -221,7 +220,7 @@ class _homePageState extends State<homePage> {
           .from('faculty')
           .select('faculty_id')
           .eq('course_id', id);
-      print("Faculty: $faculty");
+      debugPrint("Faculty: $faculty");
       facultyId.add(faculty[0]['faculty_id']);
     }
 
@@ -237,7 +236,7 @@ class _homePageState extends State<homePage> {
         }
       }
     }
-    print(Total_Classes);
+    debugPrint("$Total_Classes");
 
     // finding total classes attended by the student
     final marked_attendance = await supabase
@@ -257,6 +256,6 @@ class _homePageState extends State<homePage> {
       }
     }
 
-    print("Attended_classes: $Attended_classes");
+    debugPrint("Attended_classes: $Attended_classes");
   }
 }

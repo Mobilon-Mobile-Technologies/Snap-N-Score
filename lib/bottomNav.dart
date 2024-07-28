@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:qr_scanner/screens/homePage.dart';
 import 'package:qr_scanner/screens/profile.dart';
@@ -15,7 +17,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int index=0;
   final screens=[
     const homePage(),
-     QrScanner(),
+     const QrScanner(),
     const ProfilePage()
   ];
    

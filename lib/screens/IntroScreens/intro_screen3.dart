@@ -7,7 +7,7 @@ class IntroPage3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.pink[100],
+      color: const Color.fromARGB(255, 47, 29, 35),
       child: Center(
         child: LottieBuilder.network(
           "https://lottie.host/e507a29b-b2ed-4ff4-a449-4f615bde2242/pLExL8PKaf.json",

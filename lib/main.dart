@@ -11,7 +11,7 @@ void main() async{
 
     final prefs=await SharedPreferences.getInstance();
     final onboarding=prefs.getBool('onboarding')??false;
-    print("onboarding main() value: $onboarding");
+    debugPrint("onboarding main() value: $onboarding");
 
   await Supabase.initialize(
     url: 'https://dpbchvnpfkjvkjagaqnh.supabase.co',
@@ -33,7 +33,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Widget _currentScreen=LoginPage();
+  Widget _currentScreen=const LoginPage();
 
   @override
   void initState() {
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
     final user = supabase.auth.currentSession;
     if (user != null) {
       setState(() {
-        _currentScreen=BottomNavBar();
+        _currentScreen=const BottomNavBar();
       });
     } 
   }

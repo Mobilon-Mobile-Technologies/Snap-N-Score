@@ -7,11 +7,11 @@ class IntroPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.teal[100],
+      color: const Color.fromARGB(255, 23, 36, 35),
       child: LottieBuilder.network(
-        "https://lottie.host/3efea095-da2d-4c6a-82eb-9e0e4f740fd7/0m8kg3QM9p.json",
+        "https://lottie.host/42bae0f0-5075-4cf1-8fd8-eb8beedf99ac/oBUCrI4MUo.json",
         height: 300,
-        alignment: Alignment(0, -0.5),
+        alignment: const Alignment(0, -0.5),
       ),
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:flutter/material.dart';
 import 'package:qr_scanner/authentication/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -42,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Text(
                     "${supabase.auth.currentUser?.email}",
                   )
@@ -69,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LoginPage(),
+                          builder: (context) => const LoginPage(),
                         ));
                   });
                 },

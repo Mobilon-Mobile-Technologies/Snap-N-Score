@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 int findGCD(int a, int b) {
   while (b != 0) {
     int temp = b;
@@ -51,16 +53,16 @@ void main() {
     // Encrypting message
     int c= modExponentiation(message,e,n);
 
-    print("Encrypted message: $c");
+    debugPrint("Encrypted message: $c");
 
     // Decrypting message
     int m=modExponentiation(c,d,n);
 
-    print("Decrypted message: $m");
+    debugPrint("Decrypted message: $m");
     
 
-  print("n: $n");
-  print("e (public key): $e");
-  print("d (private key): $d");
+  debugPrint("n: $n");
+  debugPrint("e (public key): $e");
+  debugPrint("d (private key): $d");
 
 }

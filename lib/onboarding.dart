@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:qr_scanner/authentication/login.dart';
 import 'package:qr_scanner/screens/IntroScreens/intro_screen1.dart';
@@ -15,7 +16,7 @@ class OnBoarding extends StatefulWidget {
 
 class _OnBoardingState extends State<OnBoarding> {
   bool onlastPage = false;
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -36,17 +37,17 @@ class _OnBoardingState extends State<OnBoarding> {
             ],
           ),
           Container(
-            alignment: Alignment(0, 0.85),
+            alignment: const Alignment(0, 0.85),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 if (onlastPage)
                   FilledButton.tonal(
-                    style: ButtonStyle(),
+                    style: const ButtonStyle(),
                     onPressed: () async{
                       final pref=await SharedPreferences.getInstance();
                       await pref.setBool('onboarding', true);
-                      await Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
+                      if(context.mounted) Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage(),));
                     },
                     child: const Text(
                       "Get started",
@@ -57,14 +58,14 @@ class _OnBoardingState extends State<OnBoarding> {
                     children: [
                       GestureDetector(
                         onTap: () => _controller.animateToPage(2,
-                            duration: Duration(milliseconds: 500),
+                            duration: const Duration(milliseconds: 500),
                             curve: Curves.easeIn),
-                        child: const Text("skip"),
+                        child:  Text("skip",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),),
                       ),
                       SizedBox(width: width*0.15,),
                       SmoothPageIndicator(
                         effect: const ExpandingDotsEffect(
-                            expansionFactor: 2, dotColor: Colors.white10),
+                            expansionFactor: 3, dotColor: Colors.white10),
                         controller: _controller,
                         count: 3,
                       ),
@@ -72,10 +73,10 @@ class _OnBoardingState extends State<OnBoarding> {
                       GestureDetector(
                         onTap: () {
                           _controller.nextPage(
-                              duration: Duration(milliseconds: 500),
+                              duration: const Duration(milliseconds: 500),
                               curve: Curves.easeIn);
                         },
-                        child: Text("next"),
+                        child:  Text("next",style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),),
                       ),
                     ],
                   ),

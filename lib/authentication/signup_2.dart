@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:qr_scanner/authentication/login.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -34,7 +36,7 @@ class _SignupPage2State extends State<SignupPage2> {
 
   //to check dynamic adding of courses in the list
   void debug() {
-    print(_checkedCourses);
+    debugPrint("$_checkedCourses");
   }
 
   @override
@@ -55,7 +57,7 @@ class _SignupPage2State extends State<SignupPage2> {
       body: Stack(
         children: [
           Container(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: Column(
               children: [
                 Center(
@@ -67,7 +69,7 @@ class _SignupPage2State extends State<SignupPage2> {
                       const Text("Select your courses",
                           style: TextStyle(fontSize: 20)),
                       Padding(padding: EdgeInsets.only(bottom: height * 0.03)),
-                      Container(
+                      SizedBox(
                         height: height * 0.5,
                         width: height * 0.5,
                         child: ListView.builder(
@@ -92,7 +94,6 @@ class _SignupPage2State extends State<SignupPage2> {
                   ),
                 ),
                 OutlinedButton(
-                  child: const Text("Signup"),
                   onPressed: () async {
                     final sm = ScaffoldMessenger.of(context);
                     // adding user details to the users table
@@ -107,11 +108,11 @@ class _SignupPage2State extends State<SignupPage2> {
                         .select('user_id')
                         .eq('enrollment_id', widget.enrollno);
                     final userId = userResponse[0]['user_id'];
-                    print(userId);
+                    debugPrint(userId);
 
                     // Get the course ID for course enrollment (after user creation)
                     for (String cName in _checkedCourses) {
-                      print("Course name: $cName");
+                      debugPrint("Course name: $cName");
                       final course2 = await supabase
                           .from('courses2')
                           .select('course_id')
@@ -120,7 +121,7 @@ class _SignupPage2State extends State<SignupPage2> {
                           _MappedCoursesId.add(courseId);
 
                     }
-                    print("Mapped coursesId: $_MappedCoursesId");
+                    debugPrint("Mapped coursesId: $_MappedCoursesId");
                     
 
                     for (int course in _MappedCoursesId) {
@@ -143,11 +144,11 @@ class _SignupPage2State extends State<SignupPage2> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LoginPage(),
+                            builder: (context) => const LoginPage(),
                           ));
                     }).onError((error, stackTrace) {
                       sm.showSnackBar(
-                          SnackBar(content: Text("Signed up ${error}")));
+                          SnackBar(content: Text("Signed up $error")));
                     });
                   },
                   style: ButtonStyle(
@@ -155,6 +156,7 @@ class _SignupPage2State extends State<SignupPage2> {
                           Size(height * 0.5, height * 0.068)),
                       overlayColor:
                           const MaterialStatePropertyAll(Colors.orangeAccent)),
+                  child: const Text("Signup"),
                 ),
               ],
             ),
@@ -177,7 +179,7 @@ class _SignupPage2State extends State<SignupPage2> {
           return AlertDialog(
             title: const Text('Enter Semester'),
             content: DropdownButton<int>(
-              hint: Text("Select a semester"),
+              hint: const Text("Select a semester"),
               items: List<int>.generate(2, (i) => i + 1).map((int value) {
                 return DropdownMenuItem<int>(
                   value: value,
@@ -214,7 +216,7 @@ class _SignupPage2State extends State<SignupPage2> {
 
     for (Map<String, dynamic> map in data) {
       map.forEach((key, value) {
-        print(key);
+        debugPrint(key);
         if (key != "semester" && key != "year" && value != null) {
           courses.add(value);
         }

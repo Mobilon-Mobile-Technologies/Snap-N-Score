@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.2.2
   ai_barcode_scanner: ^5.1.1+2
   timer_count_down: ^2.2.2
+  animated_text_kit: ^4.2.2
 
 dev_dependencies:
   flutter_test:
