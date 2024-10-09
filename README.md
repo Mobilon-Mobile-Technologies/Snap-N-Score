@@ -51,7 +51,7 @@ https://github.com/user-attachments/assets/3e0ce486-198e-4ca5-b09a-7f7f34df97b1
 
 1. Clone the repository
     ```bash
-    git clone https://github.com/your-username/snap-n-score.git
+    git clone https://github.com/Mobilon-Mobile-Technologies/snap-n-score.git
     ```
 2. Navigate to the project directory
     ```bash
