@@ -16,7 +16,7 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int index=0;
   final screens=[
-    const homePage(),
+    const HomePage(),
      const QrScanner(),
     const ProfilePage()
   ];
